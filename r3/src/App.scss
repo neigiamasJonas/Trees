@@ -1,0 +1,220 @@
+body {
+    margin: 0px;
+  }
+  
+  .App {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 2s linear;
+    }
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .kvc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+  
+  .kv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 77px;
+    height: 77px;
+    background-color: crimson;
+    margin: 7px;
+    border-radius: 7px;
+  }
+  
+  .apskritimas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 77px;
+    height: 77px;
+    background-color: white;
+    margin: 5px;
+  }
+  
+  .kvblue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 77px;
+    height: 77px;
+    background-color: blue;
+    margin: 7px;
+    border-radius: 7px;
+  }
+  
+  .apskritimas2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    margin: 5px;
+    border-radius: 50px;
+    color: black;
+    font-size: 20px;
+  }
+  
+  .apskritimas3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    margin: 5px;
+    color: black;
+    font-size: 20px;
+  }
+  
+  $color: #0cf;
+  
+  .button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 10rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: .15rem;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $color;
+      border-radius: 10rem;
+      z-index: -2;
+    }
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background-color: darken($color, 15%);
+      transition: all .3s;
+      border-radius: 10rem;
+      z-index: -1;
+    }
+    &:hover {
+      color: #fff;
+      &:before {
+        width: 100%;
+      }
+    }
+  }
+  
+  /* optional reset for presentation */
+  // * {
+  //   font-family: Arial;
+  //   text-decoration: none;
+  //   font-size: 20px;
+  // }
+  // .container {
+  //   padding-top: 50px;
+  //   margin: 0 auto;
+  //   width: 100%;
+  //   text-align: center;
+  // }
+  // h1 {
+  //   text-transform: uppercase;
+  //   font-size: .8rem;
+  //   margin-bottom: 2rem;
+  //   color: #777;
+  // }
+  // span {
+  //   display: block;
+  //   margin-top: 2rem;
+  //   font-size: .7rem;
+  //   color: #777;
+  //   a {
+  //     font-size: .7rem;
+  //     color: #999;
+  //     text-decoration: underline;
+  //   }
+  // }
+  
+  // h1 {
+  //   color: #0cf;
+  //   div {
+  //     color: red;
+  //     span {
+  //       color: blue;
+  //     }
+  //   }
+  // }
+  
+  .lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+  @keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
