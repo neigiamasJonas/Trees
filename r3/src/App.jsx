@@ -24,12 +24,13 @@ function App() {
 
     //Read
     useEffect(() => {
-       
+                                                                    // PAKEITIMAS
         axios.get('http://localhost:3003/medukai')
         .then(res => {
             setTrees(res.data)
         })
 
+        
     }, [lastUpdate]);
 
     // Create
@@ -37,44 +38,64 @@ function App() {
         if (null === createData) {
             return;
         }
+                                                                    // PAKEITIMAS
+        axios.post('http://localhost:3003/medukai', createData)
+        .then(res => {
+            console.log(res.data);
+
+            setLastUpdate(Date.now());
+        })
         
-        setLastUpdate(Date.now());
+        
     }, [createData]);
 
-    // Delete
+    // Delete  
     useEffect(() => {
         if (null === deleteData) {
             return;
         }
-       
-        setLastUpdate(Date.now());
+
+        axios.delete('http://localhost:3003/medukai/' + deleteData.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
+        .then(res => {
+            console.log(res.data);
+
+            setLastUpdate(Date.now());
+        })
+
     }, [deleteData]);
 
-    // Edit
+    // Edit         !!! app.js dar nepadaryta
     useEffect(() => {
-        if (null === editData) {
-            return;
-        }
-
-        setLastUpdate(Date.now());
-    }, [editData]);
+        if (null === editData) return;
+        axios.put('http://localhost:3003/medukai/' + editData.id, editData)
+        .then(_ => {
+          setLastUpdate(Date.now());
+        });
+      }, [editData]);
 
     
     return (
         <TreeContext.Provider value={
-            {trees}
+            {
+            trees,
+            setCreateData,
+            setDeleteData,
+            setEditData,
+            modalData,
+            setModalData
+            }
         }>
             <div className="container">
                 <div className="row">
                     <div className="col-4">
-                        <Create setCreateData={setCreateData}></Create>
+                        <Create></Create>
                     </div>
                     <div className="col-8">
-                        <List trees={trees} setDeleteData={setDeleteData} setModalData={setModalData}></List>
+                        <List></List>
                     </div>
                 </div>
             </div>
-            <Edit setEditData={setEditData} modalData={modalData} setModalData={setModalData}></Edit>
+          {modalData && <Edit ></Edit>}  
         </TreeContext.Provider>
     );
 

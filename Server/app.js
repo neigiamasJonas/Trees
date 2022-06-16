@@ -52,3 +52,49 @@ app.get("/medukai", (req, res) => {
 app.listen(port, () => {
   console.log(`Alo - alo, Baločka Jonas klauso - ${port}`)
 })
+
+
+///////////  CREATE  /////////////
+
+app.post("/medukai", (req, res) => {
+  const sql = `
+  INSERT INTO Medziai
+  (type, title, height)
+  VALUES(?, ?, ?)
+
+`;
+  con.query(sql, [req.body.type, req.body.title, req.body.height], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send(result);
+  });
+});
+
+///////////  DELETE  /////////////
+
+app.delete("/medukai/:id", (req, res) => {
+  const sql = `
+  DELETE FROM Medziai
+  WHERE id = ?
+
+`;
+  con.query(sql, [req.params.id], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send(result);
+  });
+});
+
+
+//////////  EDIT /////////////
+
+app.put("/medukai/:id", (req, res) => {
+  const sql = `
+  UPDATE Medziai
+  SET type = ?, title = ?, height = ?
+  WHERE id = ?
+
+`;
+  con.query(sql, [req.body.type, req.body.title, req.body.height, req.params.id], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send(result);
+  });
+});

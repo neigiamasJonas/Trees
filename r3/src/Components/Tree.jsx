@@ -1,11 +1,17 @@
+import { useContext } from "react";
+import TreeContext from "./TreeContext";
+
 function Tree({ tree }) {
 
-    const handleDelete = () => {
-        // setDeleteData(ex);
+
+    const {setDeleteData, setModalData} = useContext(TreeContext)     // pakeista
+
+    const handleDelete = () => {                        // pakeista
+        setDeleteData(tree);
     }
 
     const handleEdit = () => {
-        // setModalData(ex);
+        setModalData(tree);
     }
 
     return (
@@ -14,7 +20,7 @@ function Tree({ tree }) {
                 <div className="content">
                     <b>{tree.title}</b>
                     <span>{['Spike', 'Leaf', 'Palm'][tree.type - 1]}</span>
-                    <i>{tree.heigth}</i>
+                    <i>{tree.height}</i>
                 </div>
                 <div className="buttons">
                     <button type="button" className="btn btn-outline-success ml-2" onClick={handleEdit}>Edit</button>
