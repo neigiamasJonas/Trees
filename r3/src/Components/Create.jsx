@@ -4,7 +4,7 @@ import TreeContext from "./TreeContext";
 
 function Create() {
 
-    const {setCreateData} = useContext(TreeContext)         // pakeitimas
+    const {setCreateData, setDisableCreate, disableCreate} = useContext(TreeContext)         // pakeitimas
 
     const [title, setTitle] = useState('');
     const [type, setType] = useState('1');
@@ -13,7 +13,7 @@ function Create() {
     
 
     const handleCreate = () => {
-        
+        setDisableCreate(true);
         const data = {title, type, height};
         
         setCreateData(data);
@@ -47,7 +47,10 @@ function Create() {
                     <input type="text" className="form-control" onChange={e => setHeight(e.target.value)} value={height} />
                     <small className="form-text text-muted">Enter Tree height here.</small>
                 </div>
-                <button type="button" className="btn btn-outline-primary" onClick={handleCreate}>Create</button>
+                <button type="button" className="btn btn-outline-primary with-loader" onClick={handleCreate} disabled={disableCreate}>
+                    <span className="spinner-border spinner-border-sm mr-2"></span>
+                    <span className="spinner-text">Create</span>
+                </button>
             </div>
         </div>
     );

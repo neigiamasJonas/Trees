@@ -65,7 +65,7 @@ app.post("/medukai", (req, res) => {
 `;
   con.query(sql, [req.body.type, req.body.title, req.body.height], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
     if (err) throw err;   
-    res.send(result);
+    res.send({result, msg: {text: 'New object created', type: 'success'}});
   });
 });
 

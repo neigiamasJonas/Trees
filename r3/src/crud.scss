@@ -31,3 +31,25 @@ body {
     display: block;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+
+.show_message {
+    display: flex;
+    position: fixed;
+    top: 50px;
+    width: 100px;
+    justify-content: flex-end;
+    background-color: red;
+}
+
+button.with-loader {
+    .spinner-border {
+        display: none;
+    }
+}
+
+button.with-loader:disabled {
+    .spinner-border {
+        display: inline-block;
+    }
+}

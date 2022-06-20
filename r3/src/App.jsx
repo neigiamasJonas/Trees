@@ -7,6 +7,7 @@ import List from './Components/List';
 import Edit from './Components/Edit';
 import TreeContext from './Components/TreeContext';
 import axios from 'axios';
+import Message from './Components/Message';
 // import './App.scss';
 
 
@@ -22,32 +23,35 @@ function App() {
     const [deleteData, setDeleteData] = useState(null);
     const [editData, setEditData] = useState(null);
 
-    //Read
-    useEffect(() => {
-                                                                    // PAKEITIMAS
-        axios.get('http://localhost:3003/medukai')
-        .then(res => {
-            setTrees(res.data)
-        })
 
-        
-    }, [lastUpdate]);
+    const [message, setMessage] = useState(null)
 
-    // Create
-    useEffect(() => {
-        if (null === createData) {
-            return;
-        }
-                                                                    // PAKEITIMAS
-        axios.post('http://localhost:3003/medukai', createData)
-        .then(res => {
-            console.log(res.data);
+    const [disableCreate, setDisableCreate] = useState(false);
 
-            setLastUpdate(Date.now());
-        })
-        
-        
-    }, [createData]);
+
+  //Read
+  useEffect(() => {
+    axios.get('http://localhost:3003/medukai')
+      .then(res => setTrees(res.data));
+  }, [lastUpdate]);
+
+  // Create
+  useEffect(() => {
+    if (null === createData) return;
+    axios.post('http://localhost:3003/medukai', createData)
+      .then(res => {
+        showMessage(res.data.msg);
+        setLastUpdate(Date.now());
+      })
+      .catch(error => {
+        showMessage({ text: error.message, type: 'danger' });
+      })
+      .then(() => {
+        setDisableCreate(false);
+      })
+
+
+  }, [createData]);
 
     // Delete  
     useEffect(() => {
@@ -73,7 +77,15 @@ function App() {
         });
       }, [editData]);
 
-    
+
+    // Message funkcija
+
+      const showMessage = msg => {
+        setMessage(msg);
+        setTimeout(() => setMessage(null), 5000);
+      }
+
+
     return (
         <TreeContext.Provider value={
             {
@@ -82,7 +94,10 @@ function App() {
             setDeleteData,
             setEditData,
             modalData,
-            setModalData
+            setModalData,
+            message,
+            disableCreate,
+            setDisableCreate
             }
         }>
             <div className="container">
@@ -95,7 +110,8 @@ function App() {
                     </div>
                 </div>
             </div>
-          {modalData && <Edit ></Edit>}  
+          {modalData && <Edit ></Edit>}
+          <Message></Message>
         </TreeContext.Provider>
     );
 
