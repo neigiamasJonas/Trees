@@ -100,7 +100,22 @@ function App() {
 
 /////////////////////////// GOODS ///////////////////////////
 
+  // Create
+  useEffect(() => {
+    if (null === createDataGoods) return;
+    axios.post('http://localhost:3003/gerybes', createDataGoods)
+      .then(_ => {
+        
+        setLastUpdate(Date.now());
+      })
 
+  }, [createDataGoods]);
+
+    //Read
+    useEffect(() => {
+      axios.get('http://localhost:3003/gerybes')
+        .then(res => setGoods(res.data));
+    }, [lastUpdate]);
 
 
 
@@ -115,7 +130,8 @@ function App() {
             setModalData,
             message,
             disableCreate,
-            setDisableCreate
+            setDisableCreate,
+            goods
             }
         }>
           <GoodContext.Provider value={{

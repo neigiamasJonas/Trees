@@ -33,13 +33,15 @@ app.get('/zuikis', (req, res) => {
   })
 
 
-  ///////// medziai is MARIJA DB
+  ///////// medziai is MARIJA DB (READ)   // + JOIN left
 
 app.get("/medukai", (req, res) => {
     const sql = `
     SELECT
-    *
-    FROM Medziai
+    t.title AS title, g.title AS good, height, type, t.id
+    FROM Medziai AS t
+    LEFT JOIN goods AS g                     
+    ON t.good_id = g.id
   `;
     con.query(sql, (err, result) => {
       if (err) throw err;
@@ -49,21 +51,52 @@ app.get("/medukai", (req, res) => {
 
 ///////////////////////////////////
 
+
 app.listen(port, () => {
   console.log(`Alo - alo, Baločka Jonas klauso - ${port}`)
 })
 
+ ///////// Goodsis MARIJA DB (READ)
 
-///////////  CREATE  /////////////
+ app.get("/gerybes", (req, res) => {
+  const sql = `
+  SELECT
+  *
+  FROM goods
+`;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+///////////////////////////////////
+
+///////////  CREATE  MEDZIAI /////////////
 
 app.post("/medukai", (req, res) => {
   const sql = `
   INSERT INTO Medziai
-  (type, title, height)
-  VALUES(?, ?, ?)
+  (type, title, height, good_id)
+  VALUES(?, ?, ?, ?)
 
 `;
-  con.query(sql, [req.body.type, req.body.title, req.body.height], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+  con.query(sql, [req.body.type, req.body.title, req.body.height, req.body.good], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send({result, msg: {text: 'New object created', type: 'success'}});
+  });
+});
+
+///////////  CREATE GERYBES /////////////
+
+app.post("/gerybes", (req, res) => {
+  const sql = `
+  INSERT INTO goods
+  (title)
+  VALUES(?)
+
+`;
+  con.query(sql, [req.body.title], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
     if (err) throw err;   
     res.send({result, msg: {text: 'New object created', type: 'success'}});
   });
@@ -98,3 +131,7 @@ app.put("/medukai/:id", (req, res) => {
     res.send(result);
   });
 });
+
+
+/////// JOINN left ///////
+

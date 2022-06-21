@@ -4,22 +4,24 @@ import TreeContext from "./TreeContext";
 
 function Create() {
 
-    const {setCreateData, setDisableCreate, disableCreate} = useContext(TreeContext)         // pakeitimas
+    const {setCreateData, setDisableCreate, disableCreate, goods} = useContext(TreeContext)         // pakeitimas
 
     const [title, setTitle] = useState('');
     const [type, setType] = useState('1');
     const [height, setHeight] = useState('');
+    const [good, setGood] = useState('0');
 
     
 
     const handleCreate = () => {
         setDisableCreate(true);
-        const data = {title, type, height};
+        const data = {title, type, height, good};
         
         setCreateData(data);
         setTitle('');
         setType('1');
         setHeight('');
+        setGood('0')
     }
 
     return (
@@ -29,7 +31,7 @@ function Create() {
             </div>
             <div className="card-body">
                 <div className="form-group">
-                    <label>Tilte</label>
+                    <label>Title</label>
                     <input type="text" className="form-control" onChange={e => setTitle(e.target.value)} value={title} />
                     <small className="form-text text-muted">Enter Tree title here.</small>
                 </div>
@@ -41,6 +43,17 @@ function Create() {
                         <option value="3">Palm</option>
                     </select>
                     <small className="form-text text-muted">Select Ex type here.</small>
+                </div>
+                <div className="form-group">
+                    <label>Goods</label>
+                    <select className="form-control" onChange={e => setGood(e.target.value)} value={good}>
+                        <option value="0">SelectGoods</option>
+                        {
+                           goods === null ? null : goods.map(g => <option key={g.id} value={g.id}>{g.title}</option>)
+                        }
+
+                    </select>
+                    <small className="form-text text-muted">Select good.</small>
                 </div>
                 <div className="form-group">
                     <label>height</label>

@@ -23,7 +23,7 @@ function Create() {
             </div>
             <div className="card-body">
                 <div className="form-group">
-                    <label>Tilte</label>
+                    <label>Title</label>
                     <input type="text" className="form-control" onChange={e => setTitle(e.target.value)} value={title} />
                     <small className="form-text text-muted">Enter Tree title here.</small>
                 </div>
