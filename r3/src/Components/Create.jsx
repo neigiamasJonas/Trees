@@ -42,7 +42,7 @@ function Create() {
                         <option value="2">Leaf</option>
                         <option value="3">Palm</option>
                     </select>
-                    <small className="form-text text-muted">Select Ex type here.</small>
+                    <small className="form-text text-muted">Select Tree type here.</small>
                 </div>
                 <div className="form-group">
                     <label>Goods</label>

@@ -81,7 +81,7 @@ app.post("/medukai", (req, res) => {
   VALUES(?, ?, ?, ?)
 
 `;
-  con.query(sql, [req.body.type, req.body.title, req.body.height, req.body.good], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+  con.query(sql, [req.body.type, req.body.title, req.body.height ? req.body.height : 0, req.body.good !== '0'? req.body.good : null], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
     if (err) throw err;   
     res.send({result, msg: {text: 'New object created', type: 'success'}});
   });
@@ -116,17 +116,31 @@ app.delete("/medukai/:id", (req, res) => {
   });
 });
 
+///////////  DELETE GOODS /////////////
 
-//////////  EDIT /////////////
+app.delete("/gerybes/:id", (req, res) => {
+  const sql = `
+  DELETE FROM goods
+  WHERE id = ?
+
+`;
+  con.query(sql, [req.params.id], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send(result);
+  });
+});
+
+
+//////////  EDIT + EDIT GOODS /////////////
 
 app.put("/medukai/:id", (req, res) => {
   const sql = `
   UPDATE Medziai
-  SET type = ?, title = ?, height = ?
+  SET type = ?, title = ?, height = ?, good_id = ?
   WHERE id = ?
 
 `;
-  con.query(sql, [req.body.type, req.body.title, req.body.height, req.params.id], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+  con.query(sql, [req.body.type, req.body.title, req.body.height, req.body.good, req.params.id], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
     if (err) throw err;   
     res.send(result);
   });

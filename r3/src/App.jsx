@@ -12,6 +12,7 @@ import GoodContext from './Components/goods/GoodContext';
 // import './App.scss';
 
 import CreateGoods from './Components/goods/Create'
+import GoodList from './Components/goods/List';
 
 
 
@@ -31,7 +32,8 @@ function App() {
     /// GOODS
 
     const [goods, setGoods] = useState(null);
-    const [createDataGoods, setCreateDataGoods] = useState(null);;
+    const [createDataGoods, setCreateDataGoods] = useState(null);
+    const [deleteDataGoods, setDeleteDataGoods] = useState(null);
 
 
 
@@ -118,6 +120,21 @@ function App() {
     }, [lastUpdate]);
 
 
+    // Delete  
+    useEffect(() => {
+      if (null === deleteDataGoods) {
+          return;
+      }
+
+      axios.delete('http://localhost:3003/gerybes/' + deleteDataGoods.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
+      .then(res => {
+          console.log(res.data);
+
+          setLastUpdate(Date.now());
+      })
+
+  }, [deleteDataGoods]);
+
 
     return (
         <TreeContext.Provider value={
@@ -135,13 +152,16 @@ function App() {
             }
         }>
           <GoodContext.Provider value={{
-            setCreateData: setCreateDataGoods   // galima rasyt tiesiai setCreateDataGoods, bet taip paciai reik uzvadinti ir create'e
+            setCreateData: setCreateDataGoods,   // galima rasyt tiesiai setCreateDataGoods, bet taip paciai reik uzvadinti ir create'e
+            goods,
+            setDeleteData: setDeleteDataGoods
           }}>
               <div className="container">
                   <div className="row">
                       <div className="col-4">
                           <Create></Create>
                           <CreateGoods></CreateGoods>
+                          <GoodList></GoodList>
                       </div>
                       <div className="col-8">
                           <List></List>
