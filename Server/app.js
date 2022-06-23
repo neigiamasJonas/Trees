@@ -151,5 +151,59 @@ app.put("/medukai/:id", (req, res) => {
 });
 
 
-/////// JOINN left ///////
+///////////////////////////////////////
 
+ ///////// Goodsai MARIJA DB (READ) ++++ RIGHT JOIN
+
+ app.get("/front", (req, res) => {
+  const sql = `
+  SELECT
+  g.title, g.id, t.title AS trees_title, GROUP_CONCAT(t.title) AS tree_titles
+  FROM Medziai AS t
+  RIGHT JOIN goods AS g                     
+  ON t.good_id = g.id
+  GROUP BY g.id
+  ORDER BY g.title
+  
+  
+`;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+///////////////////////////////////
+  ///////// medziai is MARIJA DB (READ)   // + JOIN left
+
+  app.get("/front/trees", (req, res) => {
+    const sql = `
+    SELECT
+    t.title AS title, g.title AS good, height, type, t.id, GROUP_CONCAT(co.com, '-^o^-') AS coms
+    FROM Medziai AS t
+    LEFT JOIN goods AS g                     
+    ON t.good_id = g.id
+    LEFT JOIN comments AS co
+    ON co.tree_id = t.id
+    GROUP BY t.id
+  `;
+    con.query(sql, (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
+  });
+
+
+  /////////////////////////////////// Comments   ///////////
+  app.post("/front/comments", (req, res) => {
+    const sql = `
+    INSERT INTO comments
+    (com, tree_id)
+    VALUES(?, ?)
+  
+  `;
+    con.query(sql, [req.body.com, req.body.treeId], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+      if (err) throw err;   
+      res.send({result, msg: {text: 'New object created', type: 'success'}});
+    });
+  });
