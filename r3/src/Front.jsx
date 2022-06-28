@@ -13,16 +13,18 @@ function Front() {
 
     const [lastUpdate, setLastUpdate] = useState(Date.now());
 
+    const [rateNow, setRateNow] = useState(null)
+
     useEffect(() => {
-        axios.get('http://localhost:3003/front')
+        axios.get('http://localhost:3004/front')
         .then(res => {
             setGoods(res.data)
             console.log(res.data);
         })
-    }, [])
+    }, [lastUpdate])
 
     useEffect(() => {
-        axios.get('http://localhost:3003/front/trees')
+        axios.get('http://localhost:3004/front/trees')
         .then(res => {
             setTrees(res.data)
             console.log(res.data);
@@ -34,7 +36,7 @@ function Front() {
 
      useEffect(() => {
         if (null === createComment) return;
-        axios.post('http://localhost:3003/front/comments', createComment)
+        axios.post('http://localhost:3004/front/comments', createComment)
         .then(_ => {
             setLastUpdate(Date.now())
         // setLastUpdate(Date.now());
@@ -42,13 +44,26 @@ function Front() {
 
   }, [createComment]);
 
+      // Create RATE
+
+      useEffect(() => {
+        if (null === rateNow) return;
+        axios.put('http://localhost:3004/front/balsuok/' + rateNow.id, rateNow)
+        .then(_ => {
+            setLastUpdate(Date.now())
+        // setLastUpdate(Date.now());
+      })
+
+  }, [rateNow]);
+
 
     return (
         <FrontContext.Provider value={
             {
                 goods,
                 trees,
-                setCreateComment
+                setCreateComment,
+                setRateNow
             }
         }>
             <div className="container">

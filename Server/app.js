@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3003;
+const port = 3004;
 
 /// Isikopinta
 const cors = require("cors");
@@ -38,10 +38,13 @@ app.get('/zuikis', (req, res) => {
 app.get("/medukai", (req, res) => {
     const sql = `
     SELECT
-    t.title AS title, g.title AS good, height, type, t.id
+    t.title AS title, g.title AS good, height, type, t.id, GROUP_CONCAT(co.com, '-^o^-') AS coms, GROUP_CONCAT(co.id) AS coms_id, t.rates, t.rate_sum
     FROM Medziai AS t
     LEFT JOIN goods AS g                     
     ON t.good_id = g.id
+    LEFT JOIN comments AS co
+    ON co.tree_id = t.id
+    GROUP BY t.id
   `;
     con.query(sql, (err, result) => {
       if (err) throw err;
@@ -179,7 +182,7 @@ app.put("/medukai/:id", (req, res) => {
   app.get("/front/trees", (req, res) => {
     const sql = `
     SELECT
-    t.title AS title, g.title AS good, height, type, t.id, GROUP_CONCAT(co.com, '-^o^-') AS coms
+    t.title AS title, g.title AS good, height, type, t.id, GROUP_CONCAT(co.com, '-^o^-') AS coms, t.rates, t.rate_sum
     FROM Medziai AS t
     LEFT JOIN goods AS g                     
     ON t.good_id = g.id
@@ -207,3 +210,33 @@ app.put("/medukai/:id", (req, res) => {
       res.send({result, msg: {text: 'New object created', type: 'success'}});
     });
   });
+
+
+/// com del
+
+  app.delete("/front/comments/:comId", (req, res) => {
+    const sql = `
+    DELETE FROM comments
+    WHERE id = ?
+    `;
+
+    con.query(sql, [req.params.comId], (err, result) => {
+        if (err) throw err;
+        res.send({ result, msg: { text: 'Komentaro pabaiga', type: 'info' } });
+    });
+});
+
+/// rate create 'http://localhost:3004/front/balsuok/'
+
+app.put("/front/balsuok/:treeId", (req, res) => {
+  const sql = `
+  UPDATE Medziai
+  SET rates = rates + 1, rate_sum = rate_sum + ?
+  WHERE id = ?
+
+`;
+  con.query(sql, [req.body.rate, req.params.treeId], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send({result, msg: {text: 'Prabalsuota sekmingai', type: 'success'}});
+  });
+});

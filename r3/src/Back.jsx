@@ -43,17 +43,26 @@ function Back() {
     const [message, setMessage] = useState(null)
     const [disableCreate, setDisableCreate] = useState(false);
 
+
+    /////  Backas filtruoja ar fronte kas keiciasi kas 3 sekundes
+
+    // useEffect(() => {
+    //   setInterval(() => {
+    //     setLastUpdate(Date.now())
+    //   }, 3000);
+    // }, [])
+
 /////////////////////////// MEDZIAI ///////////////////////////
   //Read
   useEffect(() => {
-    axios.get('http://localhost:3003/medukai')
+    axios.get('http://localhost:3004/medukai')
       .then(res => setTrees(res.data));
   }, [lastUpdate]);
 
   // Create
   useEffect(() => {
     if (null === createData) return;
-    axios.post('http://localhost:3003/medukai', createData)
+    axios.post('http://localhost:3004/medukai', createData)
       .then(res => {
         showMessage(res.data.msg);
         setLastUpdate(Date.now());
@@ -74,7 +83,7 @@ function Back() {
             return;
         }
 
-        axios.delete('http://localhost:3003/medukai/' + deleteData.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
+        axios.delete('http://localhost:3004/medukai/' + deleteData.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
         .then(res => {
             console.log(res.data);
 
@@ -86,7 +95,7 @@ function Back() {
     // Edit         !!! app.js dar nepadaryta
     useEffect(() => {
         if (null === editData) return;
-        axios.put('http://localhost:3003/medukai/' + editData.id, editData)
+        axios.put('http://localhost:3004/medukai/' + editData.id, editData)
         .then(_ => {
           setLastUpdate(Date.now());
         });
@@ -105,7 +114,7 @@ function Back() {
   // Create
   useEffect(() => {
     if (null === createDataGoods) return;
-    axios.post('http://localhost:3003/gerybes', createDataGoods)
+    axios.post('http://localhost:3004/gerybes', createDataGoods)
       .then(_ => {
         
         setLastUpdate(Date.now());
@@ -115,7 +124,7 @@ function Back() {
 
     //Read
     useEffect(() => {
-      axios.get('http://localhost:3003/gerybes')
+      axios.get('http://localhost:3004/gerybes')
         .then(res => {
           console.log(res.data);
           setGoods(res.data)});
@@ -128,7 +137,7 @@ function Back() {
           return;
       }
 
-      axios.delete('http://localhost:3003/gerybes/' + deleteDataGoods.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
+      axios.delete('http://localhost:3004/gerybes/' + deleteDataGoods.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
       .then(res => {
           console.log(res.data);
 
@@ -137,6 +146,15 @@ function Back() {
 
   }, [deleteDataGoods]);
 
+
+      // DELETE COMMENT
+      const handleDeleteComment = id => {
+        axios.delete('http://localhost:3004/front/comments/' + id)
+        .then(res => {
+          showMessage(res.data.msg);
+          setLastUpdate(Date.now());
+        });
+    }
 
     return (
         <TreeContext.Provider value={
@@ -150,7 +168,8 @@ function Back() {
             message,
             disableCreate,
             setDisableCreate,
-            goods
+            goods,
+            handleDeleteComment
             }
         }>
           <GoodContext.Provider value={{
